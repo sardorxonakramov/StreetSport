@@ -29,6 +29,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Django REST Framework
+    'rest_framework',
+    'rest_framework.authtoken',
 
     # Mening applarim
     'USERS.apps.UsersConfig',
@@ -128,3 +131,13 @@ AUTH_USER_MODEL = 'USERS.CustomUser'
 
 LOGOUT_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
+
+# Django REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
