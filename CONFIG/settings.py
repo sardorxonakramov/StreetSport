@@ -31,10 +31,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Django REST Framework
     'rest_framework',
-    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 
     # Mening applarim
     'USERS.apps.UsersConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -134,10 +136,7 @@ LOGOUT_REDIRECT_URL = 'login'
 
 # Django REST Framework settings
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }

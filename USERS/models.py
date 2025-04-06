@@ -19,6 +19,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     phone = models.CharField(
         max_length=13,
+        unique=True,
         validators=[
             RegexValidator(
                 regex=r"^\+998\d{9}$",
