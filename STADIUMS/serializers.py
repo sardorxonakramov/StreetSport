@@ -17,16 +17,7 @@ class StadionListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Stadion
-        fields = [
-            "id",
-            "name",
-            "slug",
-            "location",
-            "capacity",
-            "status",
-            "is_active",
-            "images",
-        ]
+        fields = ['__all__']
 
 
 class StadionDetailSerializer(serializers.ModelSerializer):
