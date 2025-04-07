@@ -4,20 +4,26 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, UserInfoSerializer
-
-
+from .serializers import (
+    RegisterSerializer,
+    UserSerializer,
+    UserInfoSerializer,
+)
+from .permissions import UserViewUchunRuxsatlar
 
 User = get_user_model()
 
 
-class UserListView( generics.ListCreateAPIView):
-    """
-    API view to retrieve a list of all users and create new users.
-    """
+class UserListView(generics.ListCreateAPIView):
+    """Api orqali userlarni json ko'rinishida ko'rish uchun view"""
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated,IsAdminUser]  # Only admin users can access this view
+    permission_classes = [
+        IsAuthenticated,
+        UserViewUchunRuxsatlar
+    ]  
+    ordering = ["-created_at"]
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
@@ -28,21 +34,19 @@ class UserListView( generics.ListCreateAPIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class UserDetailView(UserPassesTestMixin,generics.RetrieveUpdateDestroyAPIView):
-    """
-    API view to retrieve, update, or delete a user.
-    """
+
+class UserDetailView(UserPassesTestMixin, generics.RetrieveUpdateDestroyAPIView):
+    """API lar orqali userni update yoki delete qilishi mumkin"""
+
     queryset = User.objects.all()
     serializer_class = UserInfoSerializer
-    # permission_classes = [IsAdminUser]  # Only admin users can access this view
 
     def get(self, request, *args, **kwargs):
         """
         Handle GET requests to retrieve a specific user.
         """
         return super().get(request, *args, **kwargs)
-    
-    
+
     def test_func(self):
         user = self.get_object()
         current_user = self.request.user
@@ -50,12 +54,13 @@ class UserDetailView(UserPassesTestMixin,generics.RetrieveUpdateDestroyAPIView):
         return (
             current_user.is_superuser
             or current_user.is_staff
-            or current_user.role == 'admin'
+            or current_user.role == "admin"
             or current_user == user
         )
-    
+
 
 class UserRegisterView(generics.CreateAPIView):
+    '''Userni ro'yxatdan o'tkazish uchun API view'''
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
 
@@ -73,8 +78,7 @@ class UserRegisterView(generics.CreateAPIView):
                     "last_name": user.last_name,
                     "phone": user.phone,
                     "role": user.role,
-                }
+                },
             },
             status=status.HTTP_201_CREATED,
         )
-
