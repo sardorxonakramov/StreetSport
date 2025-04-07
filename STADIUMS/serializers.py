@@ -11,9 +11,9 @@ class StadionImageSerializer(serializers.ModelSerializer):
         fields = ["id", "image", "uploaded_at"]
 
 
-class StadionSerializer(serializers.ModelSerializer):
-    owner = serializers.StringRelatedField()  # faqat email yoki __str__ ko‘rsatadi
+class StadionListSerializer(serializers.ModelSerializer):
     images = StadionImageSerializer(many=True, read_only=True)
+    owner = serializers.StringRelatedField()
 
     class Meta:
         model = Stadion
@@ -21,39 +21,28 @@ class StadionSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "slug",
-            "owner",
             "location",
             "capacity",
-            "date_opened",
-            "image",
-            "description",
             "status",
             "is_active",
-            "created_at",
-            "updated_at",
             "images",
         ]
-        read_only_fields = ["slug", "created_at", "updated_at"]
 
 
-class StadionCreateSerializer(serializers.ModelSerializer):
-    """
-    Faqat admin yoki owner yangi stadion qo‘shishi uchun — owner ID yuboradi
-    """
+class StadionDetailSerializer(serializers.ModelSerializer):
+    images = StadionImageSerializer(many=True, read_only=True)
+    owner = serializers.StringRelatedField()
 
     class Meta:
         model = Stadion
-        fields = [
-            "name",
-            "owner",
-            "location",
-            "capacity",
-            "date_opened",
-            "image",
-            "description",
-            "status",
-            "is_active",
-        ]
+        fields = "__all__"
+        read_only_fields = ["slug", "created_at", "updated_at"]
+
+
+class StadionCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stadion
+        exclude = ["slug", "created_at", "updated_at"]
 
 
 class ManagerStadionSerializer(serializers.ModelSerializer):
@@ -62,7 +51,7 @@ class ManagerStadionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ManagerStadion
-        fields = ["id", "user", "stadion", "assigned_at", "approved_by_owner"]
+        fields = "__all__"
 
 
 class ManagerStadionCreateSerializer(serializers.ModelSerializer):
