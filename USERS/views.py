@@ -11,7 +11,7 @@ from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, Us
 User = get_user_model()
 
 
-class UserListView(LoginRequiredMixin, generics.ListCreateAPIView):
+class UserListView( generics.ListCreateAPIView):
     """
     API view to retrieve a list of all users and create new users.
     """
@@ -28,13 +28,13 @@ class UserListView(LoginRequiredMixin, generics.ListCreateAPIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class UserDetailView(LoginRequiredMixin,generics.RetrieveUpdateDestroyAPIView):
+class UserDetailView(UserPassesTestMixin,generics.RetrieveUpdateDestroyAPIView):
     """
     API view to retrieve, update, or delete a user.
     """
     queryset = User.objects.all()
     serializer_class = UserInfoSerializer
-    permission_classes = [IsAdminUser]  # Only admin users can access this view
+    # permission_classes = [IsAdminUser]  # Only admin users can access this view
 
     def get(self, request, *args, **kwargs):
         """
@@ -42,3 +42,39 @@ class UserDetailView(LoginRequiredMixin,generics.RetrieveUpdateDestroyAPIView):
         """
         return super().get(request, *args, **kwargs)
     
+    
+    def test_func(self):
+        user = self.get_object()
+        current_user = self.request.user
+
+        return (
+            current_user.is_superuser
+            or current_user.is_staff
+            or current_user.role == 'admin'
+            or current_user == user
+        )
+    
+
+class UserRegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {
+                "message": "User registered successfully",
+                "user": {
+                    "id": user.id,
+                    "email": user.email,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "phone": user.phone,
+                    "role": user.role,
+                }
+            },
+            status=status.HTTP_201_CREATED,
+        )
+
