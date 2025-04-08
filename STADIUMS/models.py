@@ -23,7 +23,7 @@ class Stadion(models.Model):
     location = models.CharField(max_length=100)
     capacity = models.IntegerField(default=10)
     date_opened = models.DateField()
-    image = models.ImageField(upload_to="stadions/")
+    image = models.ImageField(upload_to="stadions/") # bu rasim ustida  ishlashim kerak
     description = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="open")
     is_active = models.BooleanField(default=False)

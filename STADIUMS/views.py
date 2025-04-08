@@ -42,6 +42,7 @@ class OwnerStadionListView(generics.ListAPIView):
 
 
 # ✅ Owner — create stadium
+# owner is activ bermaydi faqat admin qila oladi.
 class OwnerStadionCreateView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = StadionCreateUpdateSerializer
@@ -74,6 +75,8 @@ class AssignManagerView(generics.CreateAPIView):
 
 
 # ✅ Manager — view assigned stadiums
+# meneger tamir va ochiq yoki yopiqligini boshqara oladi va 2 ta band qo'shish kerak
+# band va bron qilingan qilish
 class ManagerAssignedStadionListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = StadionListSerializer
@@ -87,6 +90,7 @@ class ManagerAssignedStadionListView(generics.ListAPIView):
         )
 
 
+# buu yerga bron qilingan va band stadionlarni ko'rish mumkin
 class OwnerDashboardView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
