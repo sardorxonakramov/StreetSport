@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Mening applarim
     "USERS.apps.UsersConfig",
     "STADIUMS.apps.StadiumsConfig",
+    "BOOKING.apps.BookingConfig"
 ]
 
 
