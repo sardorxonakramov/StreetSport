@@ -10,7 +10,7 @@ from .serializers import (
     ManagerStadionSerializer,
     ManagerStadionCreateSerializer,
 )
-
+from .permissions import IsOwner
 User = get_user_model()
 
 
@@ -30,6 +30,9 @@ class AdminStadionDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Stadion.objects.all()
     serializer_class = StadionDetailSerializer
 
+    def perform_update(self, serializer):
+        serializer.save(is_active=True)
+
 
 # ✅ Owner — view only their own stadiums
 class OwnerStadionListView(generics.ListAPIView):
@@ -44,11 +47,14 @@ class OwnerStadionListView(generics.ListAPIView):
 # ✅ Owner — create stadium
 # owner is activ bermaydi faqat admin qila oladi.
 class OwnerStadionCreateView(generics.CreateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsOwner, permissions.IsAuthenticated]
     serializer_class = StadionCreateUpdateSerializer
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        if self.request.user.role == 'owner':
+            serializer.save(owner=self.request.user, is_active=False)
+        else:
+            raise permissions.PermissionDenied('Siz owner emassiz!\nShuning uchun stadion kirita olmaysiz \nKiritish uchun adminga bog\'laning')
 
 
 # ✅ Owner — update/delete only their own stadium
