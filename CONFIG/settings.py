@@ -61,9 +61,19 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
             "TITLE": "STREET SPORTS",
-            "DESCRIPTION": "Django Rest Frameworkda qilingan project, bu stadionlar haqida qilingan barcha api documentatsiyasi  ",
+            "DESCRIPTION": "Sardorxon tomonidan qilingan project, bu stadionlar haqida qilingan barcha api documentatsiyasi  ",
             "VERSION" : "1.0.0"
             }
+# bu hamma uchun ruxat berish
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_CREDENTIALS = True
+
+# react loyiha va o'zimiz uchun ruxsat berdik
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://localhost:3000",
+]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
