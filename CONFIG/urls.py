@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
     TokenBlacklistView,
 )
-
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView,SpectacularSwaggerView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -21,5 +21,9 @@ urlpatterns = [
     path("api/v1/auth", include("rest_framework.urls")),
     path("api/v1/", include("USERS.urls")),
     path("api/v1/", include("STADIUMS.urls")),
-    path("api/v1/user/", include('BOOKING.urls'))
+    path("api/v1/user/", include("BOOKING.urls")),
+    # Api uchun documentatsiya yozilgan sahifa
+    path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("api/v1/schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    path("api/v1/schema/swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger"),
 ]

@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    # Documentatsiya
+    "drf_spectacular",
     # Mening applarim
     "USERS.apps.UsersConfig",
     "STADIUMS.apps.StadiumsConfig",
-    "BOOKING.apps.BookingConfig"
+    "BOOKING.apps.BookingConfig",
 ]
 
 
@@ -54,7 +56,15 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+SPECTACULAR_SETTINGS = {
+            "TITLE": "STREET SPORTS",
+            "DESCRIPTION": "Django Rest Frameworkda qilingan project, bu stadionlar haqida qilingan barcha api documentatsiyasi  ",
+            "VERSION" : "1.0.0"
+            }
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -100,13 +110,13 @@ WSGI_APPLICATION = "CONFIG.wsgi.application"
 
 # PostgreSQL ga ulanish uchun configuratsiya
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env.str('DB_NAME'),
-        'USER':env.str('DB_USER'),
-        'PASSWORD':env.str('DB_PASSWORD'),
-        'PORT': env.int('DB_PORT'),
-        'HOST':env.str('DB_HOST'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env.str("DB_NAME"),
+        "USER": env.str("DB_USER"),
+        "PASSWORD": env.str("DB_PASSWORD"),
+        "PORT": env.int("DB_PORT"),
+        "HOST": env.str("DB_HOST"),
     }
 }
 
