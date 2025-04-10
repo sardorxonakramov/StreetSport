@@ -1,6 +1,8 @@
-## .env fayl yaratib, ushbu o‘zgaruvchilarni saqlang
+# Dasturni yuklab olganingizdan so'ng, 
+## foydalanish uchun quydagi amallarni bajaring
 
-Kerakli o‘zgaruvchilarni moslab to‘ldiring va saqlang. Ushbu faylni loyihangizning asosiy papkasiga `.env` nomi bilan qo‘ying.
+## 1. Ushbu faylni loyihangizning asosiy papkasiga `.env` nomi bilan qo‘ying.
+## 2. Kerakli o‘zgaruvchilarni moslab to‘ldiring va saqlang. 
 
 ```env
 DJANGO_SECRET_KEY='django-insecure-h4056ry70x(k^_4f(&2++1_72kqp0%)6ub$x13ygg84_qe%i9k'
